@@ -2,14 +2,17 @@
 
 Understanding more about flights departing and arriving at HKG.
 
-![HKG Flights Overview](images/Overview.png)
-![Airline Performances](images/By%20Carrier.png)
-
-
 #### -- Project Start: May 1st, 2022
 #### -- Expected Duration: 3-5 months
 #### -- Project Status: [Active, ~~On-Hold~~, ~~Completed~~]
 #### -- Expected Technologies: R, Python, ETL, GCP Bigquery, Tableau, XGBoost, AWS Sagemaker 
+
+
+## Project Highlights
+
+Tableau Dashboard: [Flights Through Hong Kong International Airport](https://public.tableau.com/app/profile/yoshi.man1207/viz/FlightsThroughHongKongInternationalAirport/Overview)
+![HKG Flights Overview](images/Overview.png)
+
 
 ## Description
 With flights being limited in Hong Kong during the COVID-19 pandemic, what was traditionally a major international flight hub has been challenged lately as more airlines warn [the risks of pulling HKG out](https://www.scmp.com/news/hong-kong/transport/article/3178600/hong-kong-bypassed-european-airlines-warn-they-cant-add) of their maps altogther. Having seen that there exists a [pulicly available API](https://data.gov.hk/en-data/dataset/aahk-team1-flight-info) provided by the Hong Kong Airport Authority, I decided to look into how flights are doing in HKG in the past few months, and gain a better overall understanding of the situation HKG is experiencing.
