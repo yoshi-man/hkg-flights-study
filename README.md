@@ -10,7 +10,8 @@ Understanding more about flights departing and arriving at HKG.
 
 ## Project Highlights
 
-Tableau Dashboard: [Flights Through Hong Kong International Airport](https://public.tableau.com/app/profile/yoshi.man1207/viz/FlightsThroughHongKongInternationalAirport/Overview)
+- Tableau Dashboard: [Flights Through Hong Kong International Airport](https://public.tableau.com/app/profile/yoshi.man1207/viz/FlightsThroughHongKongInternationalAirport/Overview)
+
 ![HKG Flights Overview](images/Overview.png)
 
 
