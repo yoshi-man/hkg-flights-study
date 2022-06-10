@@ -1,0 +1,156 @@
+---
+title: "Brief Exploration of Flights Data"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+## Introduction - What do we want to achieve here?
+
+The goal of this notebook is to briefly look through some features of whats on hand. The decision is to take the **latest 10,000 rows of data** available from the flights API and see if there are any interesting insights we can get.
+
+With our bigger goal of understanding flight performances in mind, it will also be beneficial to see if we can create a model to **observe how variables relate to flight delays**.
+
+## Basic Observations
+
+Setting up things here
+
+```{r echo=TRUE}
+# Workbook setup
+setwd('C:/Users/yoshi/Documents/GitHub/hkg-flights-study/explore')
+flights = read.csv('flights.csv');
+
+# packages setup
+library(dplyr)
+
+# split analysis by arrivals and departure
+arrivals = flights[flights$arrival == 'true', ]
+departures = flights[flights$arrival == 'false', ]
+```
+
+The most basic observation to begin with, the number of flights everyday, The dip at the end is due to an incomplete day. Judging from the graph, it seems as though there are more departures everyday consistent than there are arrivals. Both following a similar pattern, which seems to suggest **seasonality at the weekly level**.
+
+```{r}
+plot(as.Date(arrivals_count$V1), arrivals_count$N, type="l", col='black', ylim=c(0, 300), lwd=2, xlab="Scheduled Date", ylab="Flight Count")
+lines(as.Date(departures_count$V1), departures_count$N, type="l", col='red', lwd=2)
+legend("topright", legend=c("Arrivals", "Departures"),
+       col=c("black", "red"), lty=1, cex=1)
+```
+
+Diving deeper into a weekly level, in both cases, there seem to be a consistent pattern where Mondays have the least flights and the mid-week to weekend has the majority of the flights. This pattern is much more apparent for passenger (PAX) flights, which does make sense given travelling patterns of passengers. Interestingly, cargo flights sees more activities on Wednesdays.
+
+```{r}
+arrival_days = table(weekdays(as.Date(arrivals$scheduled_date)), arrivals$cargo)
+departure_days = table(weekdays(as.Date(departures$scheduled_date)), departures$cargo)
+
+barplot(t(as.matrix(arrival_days[c(2,6,7,5,1,3,4),])), beside=TRUE, main="Arrival Weekdays", legend=c('PAX', 'Cargo'))
+barplot(t(as.matrix(departure_days[c(2,6,7,5,1,3,4),])), beside=TRUE, main="Departure Weekdays", legend=c('PAX', 'Cargo'))
+```
+
+We can also see the time of day where each flights were scheduled to arrive/depart.Arrival flights peak during the midnight for cargo flights, where **passenger flights operate during non-midnight hours**. This is even more apparent for passenger departures. While cargo departures are a bit more irregular, peaks across the day at 3AM, 9AM, 3PM, 6PM. This might suggest that **cargo departures depart at 3 hour marks more often than not**.
+
+```{r}
+arrival_hours <- table(as.numeric(format(strptime(arrivals$scheduled_date, '%Y-%m-%dT%H:%M:%SZ'),'%H')), arrivals$cargo)
+barplot(t(as.matrix(arrival_hours)), main="Arrival Hours", legend=c('PAX', 'Cargo'), beside=TRUE)
+
+departure_hours <- table(as.numeric(format(strptime(departures$scheduled_date, '%Y-%m-%dT%H:%M:%SZ'),'%H')), departures$cargo)
+barplot(t(as.matrix(departure_hours)), main="Departure Hours", legend=c('PAX', 'Cargo'), beside=TRUE)
+```
+
+Diving deeper into the target variable now, it might be useful to see what the overall distribution of delayed_minutes we're seeing. Clearly, the results are highly skewed, where special cases of arriving multiple days or departing late by one whole week are observed. For most more "general" cases it might be more beneficial to ignore those extreme cases and focus more on the majority. The idea is to take the 5%-95% percentile of cases.
+
+```{r}
+# Arrivals Summary Statistics
+summary(arrivals$delayed_minutes)
+arrivals.kde <- density(arrivals$delayed_minutes, bw='SJ-ste', kernel="gaussian")
+plot(arrivals.kde, main="Minutes Delay for Arrival Flights")
+# Departures Summary Statistics
+summary(departures$delayed_minutes)
+departures.kde <- density(departures$delayed_minutes, bw='SJ-ste', kernel="gaussian")
+plot(departures.kde, main="Minutes Delay for Departure Flights")
+```
+
+Taking away the quantiles by adjusting the widths, now we can clearly see a much cleaner distribution in the amount of minutes delayed.
+
+```{r}
+# Adjusted arrivals
+arrivals.bounds = as.data.table(quantile(arrivals$delayed_minutes, c(.05, .95))); 
+adj_arrivals = arrivals[(arrivals$delayed_minutes > as.numeric(arrivals.bounds[1])) & (arrivals$delayed_minutes < as.numeric(arrivals.bounds[2])), ]
+# Adjusted departures
+departures.bounds = as.data.table(quantile(departures$delayed_minutes, c(.05, .95)));
+adj_departures = departures[(departures$delayed_minutes > as.numeric(departures.bounds[1])) & (departures$delayed_minutes < as.numeric(departures.bounds[2])), ]
+
+# Adjusted Arrivals Summary Statistics
+summary(adj_arrivals$delayed_minutes)
+adj_arrivals.kde <- density(adj_arrivals$delayed_minutes, bw='SJ-ste', kernel="gaussian")
+plot(adj_arrivals.kde, main="Minutes Delay for Arrival Flights")
+# Adjusted Departures Summary Statistics
+summary(adj_departures$delayed_minutes)
+adj_departures.kde <- density(adj_departures$delayed_minutes, bw='SJ-ste', kernel="gaussian")
+plot(adj_departures.kde, main="Minutes Delay for Departure Flights")
+```
+
+## Modeling Delay using GAM
+
+Building a GAM model is relatively easy, given the set of variables we have are fairly limited, the relationship between existing flight schedules and how likely they will be delayed would likely not be too conclusive. Regardless, it might be good to confirm this with a quick GAM model. We will be modeling flight delays in two ways - (1) By binary classification on whether a flight is expected to be delayed and (2) by regression on delayed minutes.
+
+In both cases, the features we will be using are simply: 
+
+* Arrival: Binary
+* Cargo: Binary 
+* Weekday: Integer 
+* Hour: Integer 
+
+Cleaning up and adding the needed columns, we get what we need to start this simple modelling process.
+
+```{r}
+adj_flights = rbind(adj_arrivals, adj_departures)
+adj_flights['arrival'] = as.numeric(as.logical(adj_flights$arrival))
+adj_flights['cargo'] = as.numeric(as.logical(adj_flights$cargo))
+adj_flights['is_delayed'] = as.numeric(as.logical(adj_flights['delayed_minutes']>0))
+adj_flights['scheduled_weekday'] = as.POSIXlt(adj_flights$scheduled_date)$wday + 1
+adj_flights['scheduled_hour'] = as.numeric(format(strptime(adj_flights$scheduled_date, '%Y-%m-%dT%H:%M:%SZ'),'%H'))
+head(adj_flights)
+```
+
+The idea is to run a GAM model, for weekday and hour on spline regression, while the binary variables will be left as linear components. As the first model consists of a response that is binary, we will use a binomial family function to model that. 
+
+The results show that all suggested variables are highly significant. When it comes to the likelihood of delay, **arrivals are 14.0%**$(e^{-0.15074}=0.860)$ **less likely to be delayed, and cargo flights are 53.2%** $(e^{0.42631}=1.532)$ **more likely to be delayed.**
+
+The non-parametric plots also reveal an interesting relation between delay probability and the time of flight. Mid-weeks are less likely to see delays, while morning flights are much more likely to be delayed compared to afternoon flights.
+```{r}
+library(mgcv)
+gam <- bam(is_delayed  ~ arrival + cargo + s(scheduled_weekday, k=7) + s(scheduled_hour) , data=adj_flights, family=binomial)
+summary(gam)
+plot(gam, pages = 1, se = TRUE, shade = TRUE, scale=0)
+```
+While we got a general idea of how each variable affects the likelihood of delay, we can also *attempt* to quantify the amount of delay by using a GAM regression model. Compared to the likelihood, when it comes to **how much more delay there will be**, departures and arrival don't play as big of a role. We still see a similar plot for the non-parametric portion, but the effects do taper off further within the day after 3pm. That is, while flights after 3pm seems to have a much lesser likelihood of delay, the **amount of delay after 3pm** is not as affected.
+```{r}
+gam <- bam(delayed_minutes  ~ arrival + cargo + s(scheduled_weekday, k=7) + s(scheduled_hour) , data=adj_flights, family=gaussian)
+summary(gam)
+plot(gam, pages = 1, se = TRUE, shade = TRUE, scale=0)
+```
+
+## Summing it all up
+The goal of this notebook is to take a brief look into what sort of values we're getting from the dataset. We've achieved that by:
+
+1. Segmenting number flights by grouped date elements to find patterns
+2. Observing the distribution of our variables
+3. Run a simple GAM model to understand more about likelihood and amount of delays.
+
+The results have shown that:
+
+1. More passengers flights are towards the weekends and non-midnight hours
+2. Cargo flights seem to be scheduled inversely to that of PAX flights
+3. Arrivals are 14% less likely to be delayed compared to departures
+4. Cargo flights are 56% more likely to be delayed compared to PAX flights
+5. Thursdays are the best days to hop on flights to experience the least delays
+5. Morning flights are much more likely to be delayed, but in terms of how much more delay, any time after 3pm won't make too much of a difference.
+
+An important disclaimer to note though, the results do assume that there are **no colinearity between variables**, which there very much would likely be. The decision to ignore these is beneficial for **better interpretability, but comes at the expense of accuracy**. Nevertheless, as the aim is to get a preliminary idea, I believe interpretability comes at a higher priority, and a lower accuracy will not jeopardize our goal.
+
+
+
+
+
+
