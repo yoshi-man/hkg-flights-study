@@ -10,8 +10,8 @@ Understanding more about flights departing and arriving at HKG.
 
 ## Project Highlights
 
-- [Data ETL with Python](/explore)
-- [EDA with R Notebook](/explore)
+- [Data ETL with Python](/explore/extract_load_transform.ipynb)
+- [EDA with R Notebook](/explore/flights_eda_notebook.nb.html)
 - [Basic Data Pipeline](/explore)
 
 ![Basic Data Pipeline](https://user-images.githubusercontent.com/38344465/173011509-e64f324c-9b0c-4232-be9c-56a77d6f8cfb.png)
