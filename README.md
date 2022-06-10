@@ -10,11 +10,11 @@ Understanding more about flights departing and arriving at HKG.
 
 ## Project Highlights
 
-- Data ETL with Python
+- [Data ETL with Python](/explore)
 
 ![Python data processing through API](https://user-images.githubusercontent.com/38344465/173005802-7f2cf603-c1c9-4163-ad49-80ffcd784fbe.png)
 
-- EDA with R Notebook
+- [EDA with R Notebook](/explore)
 
 ![Gam Model](https://user-images.githubusercontent.com/38344465/173006465-97f6b422-ed25-404b-824d-9c1b17979b27.png)
 
