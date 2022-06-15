@@ -24,7 +24,7 @@ Understanding more about flights departing and arriving at HKG.
 
 
 ## Description
-With flights being limited in Hong Kong during the COVID-19 pandemic, what was traditionally a major international flight hub has been challenged lately as more airlines warn [the risks of pulling HKG out](https://www.scmp.com/news/hong-kong/transport/article/3178600/hong-kong-bypassed-european-airlines-warn-they-cant-add) of their maps altogther. Having seen that there exists a [pulicly available API](https://data.gov.hk/en-data/dataset/aahk-team1-flight-info) provided by the Hong Kong Airport Authority, I decided to look into how flights are doing in HKG in the past few months, and gain a better overall understanding of the situation HKG is experiencing.
+With flights being limited in Hong Kong during the COVID-19 pandemic, what was traditionally a major international flight hub has been challenged lately as more airlines warn [the risks of pulling HKG out](https://www.scmp.com/news/hong-kong/transport/article/3178600/hong-kong-bypassed-european-airlines-warn-they-cant-add) of their maps altogrther. Having seen that there exists a [publicly available API](https://data.gov.hk/en-data/dataset/aahk-team1-flight-info) provided by the Hong Kong Airport Authority, I decided to look into how flights are doing in HKG in the past few months, and gain a better overall understanding of the situation HKG is experiencing.
 
 ## Descriptive Analytics - Method
 Exploratory Data Analysis will be useful in helping us gain a basic understanding of flights in HKG, which I see comprises of two main tasks - **Explore a static dataset with R, and create Data Visualisations with Tableau**. 
