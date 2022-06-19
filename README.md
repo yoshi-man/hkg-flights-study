@@ -12,9 +12,10 @@ Understanding more about flights departing and arriving at HKG.
 
 - [Data ETL with Python](/explore/extract_load_transform.ipynb)
 - [EDA with R Notebook](/explore/flights_eda_notebook.nb.html)
-- [Basic Data Pipeline](/explore)
+- [Basic Data Pipeline (Getting Flights Data)](/explore) 
+- [End to End Prediction Pipeline](/predict)
 
-![Basic Data Pipeline](https://user-images.githubusercontent.com/38344465/173011509-e64f324c-9b0c-4232-be9c-56a77d6f8cfb.png)
+![End to End Pipeline](https://user-images.githubusercontent.com/38344465/174470640-8eaca7b3-4fe9-4b3e-badf-c890c265942c.jpg)
 
 
 - Tableau Dashboard: [Flights Through Hong Kong International Airport](https://public.tableau.com/app/profile/yoshi.man1207/viz/FlightsThroughHongKongInternationalAirport/Overview)
@@ -36,7 +37,7 @@ Before we do so, expecting this project duration to be in the scale of months, t
 
 That way, we are able to continuously collect data while working on different parts of the project.
 
-#### -- Expected Duration: 1-2 months
+#### -- Actual Duration: 2 months
 #### -- Progress Status: [~~Active~~, ~~On-Hold~~, Completed :confetti_ball:]
 #### -- Read More at ```/explore```
 
@@ -47,8 +48,8 @@ To get to that point, the steps involved will be to:
 1. Build a training dataset based on brainstormed features :white_check_mark:	
 2. Fit training set to an XGBoost model; validate using cross-validation set :white_check_mark:	
 3. Evaluate model based on test set on decided metrics :white_check_mark:	
-4. Make batch predictions on upcoming departure flights in ```range(t+1, t+15)```
-6. Rolling evaluation of model on decided metrics
+4. Make batch predictions on upcoming departure flights in ```range(t+1, t+7)```:white_check_mark:	
+6. Rolling evaluation of model on decided metrics 
 5. Build a visualisation for model monitoring
 7. Retrain model if data drifts
 8. Automate this process on AWS Sagemaker*
@@ -65,5 +66,7 @@ To get to that point, the steps involved will be to:
 If you would like to try out the code or notebooks, simply clone this repo and run it yourself. Currently completed tasks:
 - ETL Jupyter notebook under ```/explore/extract_transform_load.ipynb```
 - R-Study HTML under ```/explore/flights_eda_notebook.nb.html```
+- Model Building Notebook ```/predict/build_model.ipynb```
+- Prediction Notebook ```/predict/predict.ipynb```
 
 
