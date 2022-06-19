@@ -1,0 +1,7 @@
+requests
+google-cloud-bigquery
+pandas
+xgboost
+numpy
+scikit-learn
+sklearn
