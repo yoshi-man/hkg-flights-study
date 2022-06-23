@@ -1,2 +1,5 @@
 
 predict/bq_key.json
+monitor/bq_key.json
+monitor/streamlit/secrets.toml
+monitor/.streamlit/secrets.toml

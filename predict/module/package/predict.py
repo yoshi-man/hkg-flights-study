@@ -194,6 +194,7 @@ def get_predictions(X: pd.DataFrame, X_info: pd.DataFrame, model_names: list) ->
     X_info['prediction_prob'] = preds
     X_info['prediction'] = preds_label
     X_info['prediction_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    X_info['model_threshold'] = threshold
 
     return X_info
 
