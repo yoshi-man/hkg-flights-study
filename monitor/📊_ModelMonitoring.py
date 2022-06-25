@@ -36,7 +36,7 @@ client = bigquery.Client(credentials=credentials,
                          project=credentials.project_id,)
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=43200)
 def get_departures() -> pd.DataFrame:
 
     query = f"""
@@ -52,7 +52,7 @@ def get_departures() -> pd.DataFrame:
     return df
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=43200)
 def get_arrivals() -> pd.DataFrame:
 
     query = f"""
@@ -68,7 +68,7 @@ def get_arrivals() -> pd.DataFrame:
     return df
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=43200)
 def get_predictions() -> pd.DataFrame:
 
     query = f"""
@@ -368,9 +368,9 @@ with col4:
 
     st.plotly_chart(fig, use_container_width=True)
 
-st.subheader("AUC per Week - A More Useful View")
+st.subheader("AUC per day - A More Useful View")
 
-st.write(f"Even more importantly, we want to monitor if the model has shifted. Having a weekly view of the AUC metric will allow us to see if there is a downward trend. Once we see it go below a certain threshold, it's time to re-train our model and maybe do more feature engineering.")
+st.write(f"Even more importantly, we want to monitor if the model has shifted. Having a daily/weekly view of the AUC metric will allow us to see if there is a downward trend. Once we see it go below a certain threshold, it's time to re-train our model and maybe do more feature engineering.")
 
 
 list_of_prediction_dates = list(
