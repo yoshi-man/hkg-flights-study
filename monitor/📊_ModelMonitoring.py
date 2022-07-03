@@ -9,24 +9,10 @@ import plotly.figure_factory as ff
 import plotly.express as px
 
 st.set_page_config(
-    page_title="HKG Flight Predictions - Streamlit",
+    page_title="HKG Flight Predictions - Model Monitoring",
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-# url_params = st.experimental_get_query_params()
-
-# Initialization
-# if 'airline' not in st.session_state:
-#     if url_params.get("airline") is None:
-#         st.session_state['airline'] = 'CX'
-#     else:
-#         st.session_state['airline'] = url_params.get("airline")[0]
-
-
-# credentials = service_account.Credentials.from_service_account_file(
-#     './bq_key.json', scopes=["https://www.googleapis.com/auth/cloud-platform"],
-# )
 
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"]
@@ -163,17 +149,19 @@ with col3:
 st.header('This coming week, ')
 col1, col2, col3 = st.columns(3)
 with col1:
+    latest_predictions = predictions[predictions['prediction_date']
+                                     == predictions['prediction_date'].max()]
     st.metric(
         label='Departures',
-        value=f"{predictions.groupby(['scheduled_departure', 'flight_num']).ngroups}",
-        delta=f"{predictions.groupby(['scheduled_departure', 'flight_num']).ngroups - departures_past_week.shape[0]} flights"
+        value=f"{latest_predictions.groupby(['scheduled_departure', 'flight_num']).ngroups}",
+        delta=f"{latest_predictions.groupby(['scheduled_departure', 'flight_num']).ngroups - departures_past_week.shape[0]} flights"
     )
 
 with col2:
     st.metric(
         label='Predicted Delay %',
-        value=f"{get_predicted_delay_percentage(predictions)}%",
-        delta=f"{get_predicted_delay_percentage(predictions) - get_past_delay_percentage(departures_past_week)}%",
+        value=f"{get_predicted_delay_percentage(latest_predictions)}%",
+        delta=f"{get_predicted_delay_percentage(latest_predictions) - get_past_delay_percentage(departures_past_week)}%",
         delta_color="inverse"
     )
 
