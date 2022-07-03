@@ -49,9 +49,9 @@ To get to that point, the steps involved will be to:
 2. Fit training set to an XGBoost model; validate using cross-validation set :white_check_mark:	
 3. Evaluate model based on test set on decided metrics :white_check_mark:	
 4. Make batch predictions on upcoming departure flights in ```range(t+1, t+7)```:white_check_mark:	
-6. Rolling evaluation of model on decided metrics 
-5. Build a visualisation for model monitoring
-7. Retrain model if data drifts
+6. Rolling evaluation of model on decided metrics :white_check_mark:	
+5. Build a visualisation for model monitoring :white_check_mark:	
+7. Retrain model if data drifts 
 8. Automate this process on AWS Sagemaker*
 
 *Depends on time and cost, the ultimate goal is to at least get one iteration of this pipeline to run automatically
