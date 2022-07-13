@@ -12,16 +12,14 @@ Understanding more about flights departing and arriving at HKG.
 
 - [Data ETL with Python](/explore/extract_load_transform.ipynb)
 - [EDA with R Notebook](/explore/flights_eda_notebook.nb.html)
+- [Tableau Dashboard: Flights Through Hong Kong International Airport](https://public.tableau.com/app/profile/yoshi.man1207/viz/FlightsThroughHongKongInternationalAirport/Overview)
 - [Basic Data Pipeline (Getting Flights Data)](/explore) 
 - [End to End Prediction Pipeline](/predict)
-
-![End to End Pipeline](https://user-images.githubusercontent.com/38344465/174470640-8eaca7b3-4fe9-4b3e-badf-c890c265942c.jpg)
-
-
-- Tableau Dashboard: [Flights Through Hong Kong International Airport](https://public.tableau.com/app/profile/yoshi.man1207/viz/FlightsThroughHongKongInternationalAirport/Overview)
+- [Model Monitoring Frontend](https://yoshi-man-hkg-flights-study-monitor-modelmonitoring-g5uv0e.streamlitapp.com/)
 
 ![HKG Flights Overview](images/Overview.png)
-
+![End to End Pipeline](https://user-images.githubusercontent.com/38344465/174470640-8eaca7b3-4fe9-4b3e-badf-c890c265942c.jpg)
+![Model Performance Monitoring](https://user-images.githubusercontent.com/38344465/178763904-807f531a-1547-4cad-a82f-35833c69275c.png)
 
 
 ## Description
@@ -37,7 +35,7 @@ Before we do so, expecting this project duration to be in the scale of months, t
 
 That way, we are able to continuously collect data while working on different parts of the project.
 
-#### -- Actual Duration: 2 months
+#### -- Actual Duration: 1.5 month
 #### -- Progress Status: [~~Active~~, ~~On-Hold~~, Completed :confetti_ball:]
 #### -- Read More at ```/explore```
 
@@ -57,8 +55,8 @@ To get to that point, the steps involved will be to:
 *Depends on time and cost, the ultimate goal is to at least get one iteration of this pipeline to run automatically
 
 
-#### -- Expected Duration: 2-3 months
-#### -- Progress Status: [Active, ~~On-Hold~~, ~~Completed~~]
+#### -- Actual Duration: 1.5 month
+#### -- Progress Status: [~~Active~~, ~~On-Hold~~, Completed :confetti_ball:]
 #### -- Read More at ```/predict```
 
 
