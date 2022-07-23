@@ -4,9 +4,9 @@ from google.cloud import bigquery
 
 
 def run_predictions(request):
-    MODEL_NAMES = ["20220618_iata_encoder.pkl",
-                   "20220618_dest_encoder.pkl",
-                   "20220618_t_0_13112187385559082.pkl"
+    MODEL_NAMES = ["20220723_iata_encoder.pkl",
+                   "20220723_dest_encoder.pkl",
+                   "20220723_t_0_15448787808418274.pkl"
                    ]
 
     output = end_to_end_pipeline(MODEL_NAMES)
